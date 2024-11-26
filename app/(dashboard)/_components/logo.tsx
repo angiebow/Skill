@@ -6,7 +6,7 @@ export const Logo = () => {
       height={130}
       width={130}
       alt="Logo"
-      src="/logo.webp"
+      src="/logo.png"
     />
   );
 }
