@@ -9,7 +9,7 @@ import { LogOut } from "lucide-react";
 
 export const NavbarRoutes = () => {
   const pathname = usePathname();
-
+  
   const isTeacherPage = pathname.startsWith("/teacher");
   const isPlayerPage = pathname.includes("/chapter"); 
 
