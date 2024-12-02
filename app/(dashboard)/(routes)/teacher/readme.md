@@ -1,0 +1,1 @@
+The `.rar` file in this folder contains a version where accessing the `analytics/course/create` page via routing will force the user to log in or register first.
