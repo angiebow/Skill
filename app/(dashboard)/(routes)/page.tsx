@@ -10,7 +10,7 @@ interface Course {
   title: string;
   createdAt: string;
   description: string;
-  image: string;
+  imageUrl: string;
   category: string;
   chapters: { title: string; isFree: boolean }[]; // Make sure this field exists
   price: string;
@@ -86,9 +86,9 @@ export default function Home() {
             </p>
 
             {/* Conditional rendering for image */}
-            {selectedCourse.image ? (
+            {selectedCourse.imageUrl ? (
               <img
-                src={selectedCourse.image}
+                src={selectedCourse.imageUrl}
                 alt={selectedCourse.title}
                 className="w-full h-auto mt-4"
               />
@@ -97,7 +97,7 @@ export default function Home() {
             )}
 
             <h3 className="mt-4 text-lg font-semibold">Category: {selectedCourse.category}</h3>
-            <p className="mt-2">{selectedCourse.description}</p>
+            <p className="mt-2">Description: {selectedCourse.description}</p>
 
             <h4 className="mt-4 font-semibold">Chapters:</h4>
             {selectedCourse.chapters && selectedCourse.chapters.length > 0 ? (
