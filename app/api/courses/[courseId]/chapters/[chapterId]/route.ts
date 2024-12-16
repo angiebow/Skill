@@ -3,10 +3,10 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import Mux from "@mux/mux-node";
 
-const { Video } = new Mux(
-  process.env.MUX_TOKEN_ID!,
-  process.env.MUX_TOKEN_SECRET!,
-);
+const mux = new Mux({
+  tokenId: process.env.MUX_TOKEN_ID!,
+  tokenSecret: process.env.MUX_TOKEN_SECRET!,
+});
 
 export async function PATCH(
   req: Request,
@@ -43,32 +43,36 @@ export async function PATCH(
 
     // TODO handle video upload
     if (values.videoUrl) {
-      const existingMuxData = await db.video.findFirst({
+      const existingMuxData = await db.muxData.findFirst({
         where: {
           chapterId: params.chapterId,
         },
       });
+      console.log("Check 1");
       if (existingMuxData) {
-        await Video.Assets.delete(existingMuxData.videoId);
-        await db.video.delete({
+        await mux.video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
           where: {
             id: existingMuxData.id,
           },
         });
       }
-      const video = await Video.Assets.create({
+      console.log("Check 2");
+      console.log(values.videoUrl);
+      const asset = await mux.video.assets.create({
         input: values.videoUrl,
-        playback_policy: "public",
+        playback_policy: ["public"],
         test: false,
       });
-
-      await db.video.create({
+      console.log("Check 3");
+      await db.muxData.create({
         data: {
           chapterId: params.chapterId,
-          assetId: video.id,
-          playbackId: video.playback_ids?.[0]?.id,
+          assetId: asset.id,
+          playbackId: asset.playback_ids?.[0]?.id,
         },
       });
+      console.log("Check 4");
     }
 
     return NextResponse.json(chapter);
